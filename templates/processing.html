@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifying Payment - Flash Creepto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary: #00d4aa;
+            --primary-dark: #00b894;
+            --primary-gradient: linear-gradient(135deg, #00d4aa 0%, #26a17b 100%);
+            --secondary: #2d3436;
+            --text-light: #636e72;
+            --white: #ffffff;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --border-radius: 20px;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .processing-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 50px 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .processing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            border: 4px solid #eef2f6;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .status-message {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .timer-container {
+            background: linear-gradient(135deg, #f6f9fc 0%, #eef2f6 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .timer-label {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .timer {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--secondary);
+            font-family: monospace;
+        }
+
+        .timer.warning {
+            color: #dc3545;
+        }
+
+        .info-box {
+            background: #e8f4fd;
+            color: #0c5460;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-size: 14px;
+            text-align: left;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .info-box i {
+            color: #17a2b8;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .transaction-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .transaction-details p {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .transaction-details p:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-details .label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .transaction-details .value {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .home-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.4);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="processing-card">
+            <div class="spinner"></div>
+            
+            <h2>Verifying Your Payment</h2>
+            
+            <div class="status-message" id="statusMessage">
+                Please wait while we verify your transaction on the blockchain...
+            </div>
+
+            <div class="timer-container">
+                <div class="timer-label">Time remaining for verification</div>
+                <div class="timer" id="timer">05:00</div>
+            </div>
+
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <strong>Automatic Processing</strong>
+                <p>Your payment is being verified. Once confirmed, your Flash Creepto will be automatically sent to your wallet. This usually takes 1-3 minutes.</p>
+            </div>
+
+            <div class="transaction-details">
+                <p>
+                    <span class="label">Transaction ID:</span>
+                    <span class="value">{{ tx_id[:16] }}...</span>
+                </p>
+                <p>
+                    <span class="label">Crypto Type:</span>
+                    <span class="value">{{ crypto }}</span>
+                </p>
+                <p>
+                    <span class="label">Amount:</span>
+                    <span class="value">
+                        {% if crypto == 'Bitcoin' %}
+                            {{ amount }} BTC
+                        {% else %}
+                            {{ amount|int }} Flash USDT
+                        {% endif %}
+                    </span>
+                </p>
+                <p>
+                    <span class="label">Payment:</span>
+                    <span class="value">${{ "%.2f"|format(price) }}</span>
+                </p>
+            </div>
+
+            <a href="{{ url_for('reset') }}" class="home-btn hidden" id="homeBtn">
+                <i class="fas fa-home"></i> Return to Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const txId = "{{ tx_id }}";
+            const timerElement = document.getElementById('timer');
+            const statusMessage = document.getElementById('statusMessage');
+            const homeBtn = document.getElementById('homeBtn');
+            
+            let timeLeft = 300; // 5 minutes in seconds
+            let checkInterval = 3000; // Check every 3 seconds
+            
+            function updateTimer() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 60) {
+                    timerElement.classList.add('warning');
+                }
+                
+                if (timeLeft <= 0) {
+                    timerElement.textContent = '00:00';
+                    statusMessage.textContent = 'Payment verification timeout. Please try again.';
+                    homeBtn.classList.remove('hidden');
+                    clearInterval(timerInterval);
+                    clearInterval(statusInterval);
+                }
+                
+                timeLeft--;
+            }
+            
+            function checkStatus() {
+                fetch(`/check-status/${txId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'completed') {
+                            statusMessage.textContent = '✓ Payment Verified Successfully!';
+                            statusMessage.style.color = 'var(--primary)';
+                            timerElement.textContent = '00:00';
+                            clearInterval(timerInterval);
+                            clearInterval(statusInterval);
+                            
+                            setTimeout(() => {
+                                window.location.href = data.redirect;
+                            }, 2000);
+                        } else if (data.status === 'expired') {
+                            statusMessage.textContent = data.message;
+                            timerElement.textContent = '00:00';
+                            homeBtn.classList.remove('hidden');
+                            clearInterval(timerInterval);
+                            clearInterval(statusInterval);
+                        } else if (data.time_remaining) {
+                            timeLeft = data.time_remaining;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking status:', error);
+                    });
+            }
+            
+            // Start timer
+            updateTimer();
+            const timerInterval = setInterval(updateTimer, 1000);
+            
+            // Start status checking
+            checkStatus();
+            const statusInterval = setInterval(checkStatus, checkInterval);
+            
+            // Clear intervals on page unload
+            window.addEventListener('beforeunload', function() {
+                clearInterval(timerInterval);
+                clearInterval(statusInterval);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Creepto | Deployment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary: #00d4aa;
+            --primary-dark: #00b894;
+            --primary-gradient: linear-gradient(135deg, #00d4aa 0%, #26a17b 100%);
+            --secondary: #2d3436;
+            --accent: #6c5ce7;
+            --dark-bg: #121212;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --white: #ffffff;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 60px rgba(0, 212, 170, 0.15);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --border-radius: 20px;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 212, 170, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(108, 92, 231, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Premium Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-gradient);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 212, 170, 0.3);
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+
+        .logo i {
+            font-size: 32px;
+            color: white;
+            z-index: 2;
+        }
+
+        .brand-name h1 {
+            font-size: 28px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-name span {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+            padding: 0 15px;
+        }
+
+        .stat-item::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-item:last-child::after {
+            display: none;
+        }
+
+        .stat-item .number {
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-item .label {
+            font-size: 12px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        /* Premium Hero Section */
+        .hero {
+            padding: 100px 0 70px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .hero-text h2 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            color: var(--secondary);
+        }
+
+        .hero-text h2 span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-text h2 span::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--primary);
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            max-width: 90%;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .feature {
+            background: var(--white);
+            padding: 22px;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .feature i {
+            font-size: 26px;
+            margin-bottom: 12px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+
+        .feature p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 420px;
+        }
+
+        .crypto-orb {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 80px rgba(0, 212, 170, 0.4);
+            animation: float 6s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-15px); }
+        }
+
+        .crypto-orb img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+        }
+
+        .orb-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 212, 170, 0.2);
+            animation: rotate 20s linear infinite;
+        }
+
+        .orb-ring:nth-child(2) {
+            width: 320px;
+            height: 320px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+
+        .orb-ring:nth-child(3) {
+            width: 390px;
+            height: 390px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 30s;
+        }
+
+        @keyframes rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            animation: float-element 8s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(4) {
+            top: 40px;
+            left: 25px;
+            background: var(--accent);
+            color: white;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(5) {
+            bottom: 60px;
+            right: 30px;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(6) {
+            top: 120px;
+            right: 15px;
+            animation-delay: 4s;
+        }
+
+        @keyframes float-element {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        /* Flash Creepto Banner */
+        .flash-creepto-banner {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 60px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            transform: perspective(1000px) rotateX(2deg);
+            transition: var(--transition);
+        }
+
+        .flash-creepto-banner:hover {
+            transform: perspective(1000px) rotateX(0deg) translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .flash-creepto-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.8s ease;
+        }
+
+        .flash-creepto-banner:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Premium Plans Section - Updated for Flash Creepto Options */
+        .plans {
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 12px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        /* Make crypto tabs more compact */
+        .crypto-tabs {
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .crypto-tab {
+            padding: 12px 20px;
+            border-radius: 12px;
+            gap: 10px;
+            min-width: 140px;
+            position: relative;
+        }
+
+        .crypto-tab img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .crypto-tab span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .plan-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .plan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .plan-card:hover::before {
+            opacity: 1;
+        }
+
+        .plan-card.popular {
+            border-color: var(--primary);
+            position: relative;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 8px 35px;
+            transform: rotate(45deg);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+        }
+
+        .crypto-logo {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crypto-logo img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .bitcoin-logo {
+            background: linear-gradient(135deg, #f7931a 0%, #ffb155 100%);
+        }
+
+        .usdt-logo {
+            background: linear-gradient(135deg, #26a17b 0%, #4cd8b1 100%);
+        }
+
+        .eth-logo {
+            background: linear-gradient(135deg, #627eea 0%, #8fa3ff 100%);
+        }
+
+        .plan-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .network-type {
+            display: inline-block;
+            background: rgba(0, 212, 170, 0.1);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            border: 1px solid rgba(0, 212, 170, 0.2);
+        }
+
+        .plan-description {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 25px;
+            flex-grow: 1;
+            padding: 0 10px;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .plan-features li i {
+            color: var(--primary);
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .select-plan-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 212, 170, 0.3);
+            font-size: 15px;
+        }
+
+        .select-plan-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .select-plan-btn:hover::before {
+            left: 100%;
+        }
+
+        .select-plan-btn:hover {
+            box-shadow: 0 12px 30px rgba(0, 212, 170, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Crypto Selection Tabs - Updated */
+        .crypto-tabs {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .crypto-tab {
+            background: white;
+            padding: 15px 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+        }
+
+        .crypto-tab.active {
+            border-color: var(--primary);
+            background: rgba(0, 212, 170, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .crypto-tab:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .crypto-tab img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .crypto-tab span {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 16px;
+        }
+
+        /* Out of Stock styling */
+        .crypto-tab.out-of-stock {
+            position: relative;
+            opacity: 0.7;
+            cursor: not-allowed;
+            background: #f5f5f5;
+            border-color: #ff4757;
+        }
+
+        .crypto-tab.out-of-stock:hover {
+            transform: none;
+            box-shadow: var(--shadow);
+        }
+
+        .stock-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4757;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+            white-space: nowrap;
+        }
+
+        .plan-card.out-of-stock-plan {
+            position: relative;
+            overflow: hidden;
+            opacity: 0.9;
+            border-color: #ff4757;
+            background: linear-gradient(to bottom, #fff, #fff5f5);
+        }
+
+        .plan-card.out-of-stock-plan::before {
+            background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+        }
+
+        .out-of-stock-overlay {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: #ff4757;
+            color: white;
+            padding: 8px 40px;
+            transform: rotate(45deg);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .select-plan-btn.disabled {
+            background: linear-gradient(135deg, #b0b0b0 0%, #8f8f8f 100%);
+            cursor: not-allowed;
+            pointer-events: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        .select-plan-btn.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .select-plan-btn.disabled::before {
+            display: none;
+        }
+
+        /* Navigation Steps */
+        .steps-indicator {
+            display: flex;
+            justify-content: center;
+            margin: 50px 0 30px;
+            padding: 0 20px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 1;
+            max-width: 180px;
+        }
+
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: -50%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary) 0%, #ddd 100%);
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .step-item.active:not(:last-child)::after {
+            background: var(--primary-gradient);
+        }
+
+        .step-item.completed:not(:last-child)::after {
+            background: var(--primary-gradient);
+        }
+
+        .step-circle {
+            width: 55px;
+            height: 55px;
+            background: #f1f2f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            z-index: 2;
+            position: relative;
+            transition: var(--transition);
+            border: 3px solid transparent;
+        }
+
+        .step-item.active .step-circle {
+            background: var(--white);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 8px 16px rgba(0, 212, 170, 0.2);
+        }
+
+        .step-item.completed .step-circle {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 8px 16px rgba(0, 212, 170, 0.3);
+        }
+
+        .step-item.completed .step-circle i {
+            font-size: 22px;
+        }
+
+        .step-label {
+            font-size: 13px;
+            text-align: center;
+            color: #666;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .step-item.active .step-label {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Premium Footer */
+        footer {
+            background: var(--secondary);
+            color: #aaa;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .footer-logo h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .footer-logo h3 span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-logo p {
+            color: #aaa;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            max-width: 90%;
+            font-size: 15px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contact-info div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-info i {
+            color: var(--primary);
+            font-size: 17px;
+            width: 25px;
+        }
+
+        .footer-links {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .footer-links h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 999;
+            animation: pulse-fab 2s infinite;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0, 212, 170, 0.6);
+        }
+
+        @keyframes pulse-fab {
+            0%, 100% { box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4); }
+            50% { box-shadow: 0 8px 25px rgba(0, 212, 170, 0.7); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            
+            .hero-visual {
+                height: 350px;
+            }
+            
+            .crypto-orb {
+                width: 220px;
+                height: 220px;
+            }
+            
+            .plans-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .stats {
+                display: none;
+            }
+            
+            .hero-text h2 {
+                font-size: 38px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .step-item:not(:last-child)::after {
+                right: -40%;
+                width: 80%;
+            }
+            
+            .flash-creepto-banner {
+                margin: 0 auto 40px;
+                max-width: 800px;
+            }
+            
+            .crypto-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .crypto-tab {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .hero {
+                padding: 70px 0 50px;
+            }
+            
+            .hero-text h2 {
+                font-size: 32px;
+            }
+            
+            .hero-text p {
+                font-size: 16px;
+            }
+            
+            .plans-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
+                gap: 20px;
+            }
+            
+            .plan-card {
+                padding: 25px 20px;
+            }
+            
+            .step-item:not(:last-child)::after {
+                display: none;
+            }
+            
+            .steps-indicator {
+                flex-direction: column;
+                align-items: center;
+                gap: 25px;
+            }
+            
+            .step-item {
+                max-width: 100%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 35px;
+            }
+            
+            .section-title h2 {
+                font-size: 32px;
+            }
+            
+            .crypto-tab {
+                min-width: 120px;
+                padding: 10px 15px;
+            }
+            
+            .crypto-tab img {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .crypto-tab span {
+                font-size: 13px;
+            }
+            
+            .plans-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 15px;
+            }
+            
+            .plan-card {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h2 {
+                font-size: 28px;
+            }
+            
+            .section-title h2 {
+                font-size: 28px;
+            }
+            
+            .plan-card {
+                padding: 25px 20px;
+            }
+            
+            .hero-visual {
+                height: 280px;
+            }
+            
+            .crypto-orb {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .orb-ring:nth-child(2) {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .orb-ring:nth-child(3) {
+                width: 320px;
+                height: 320px;
+            }
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Fade-in animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="brand-name">
+                        <h1>Vercel Flash 2.0 </h1>
+                        <span>Premium Crypto Solutions Since 2018</span>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="number">50K+</span>
+                        <span class="label">Happy Customers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="number">400+</span>
+                        <span class="label">Transfer Limit</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="number">180</span>
+                        <span class="label">Days Validity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text fade-in">
+                    <h2>Ultimate <span>Flash Creepto</span> Generator</h2>
+                    <p>Experience premium crypto solutions with our trusted Flash Creepto service. Since 2018, we've been providing secure, instant crypto generation for Bitcoin, USDT, and Ethereum.</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Military-Grade Security</h3>
+                            <p>Bank-level encryption and secure protocols for all transactions</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-bolt"></i>
+                            <h3>Lightning-Fast Processing</h3>
+                            <p>Instant crypto generation within minutes after verification</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-headset"></i>
+                            <h3>24/7 Premium Support</h3>
+                            <p>Dedicated support team available round the clock</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-network-wired"></i>
+                            <h3>Multi-Network Support</h3>
+                            <p>Support for Bitcoin, Ethereum, USDT (BEP20/TRC20)</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-calendar-check"></i>
+                            <h3>180 Days Validity</h3>
+                            <p>Extended validity period for maximum utility</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-redo"></i>
+                            <h3>400+ Transfers</h3>
+                            <p>Ample transfer capacity for all your needs</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-visual fade-in">
+                    <div class="crypto-orb">
+                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" id="hero-crypto-logo">
+                    </div>
+                    <div class="orb-ring"></div>
+                    <div class="orb-ring"></div>
+                    <div class="floating-element">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="floating-element">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="floating-element">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Crypto Selection Tabs - Modified -->
+    <div class="container">
+        <div class="crypto-tabs fade-in">
+            <div class="crypto-tab active" data-crypto="bitcoin">
+                <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin">
+                <span>Flash Bitcoin</span>
+            </div>
+            <div class="crypto-tab" data-crypto="usdt-bep20">
+                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
+                <span>Flash USDT (BEP20)</span>
+            </div>
+            <div class="crypto-tab" data-crypto="usdt-trc20">
+                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
+                <span>Flash USDT (TRC20)</span>
+            </div>
+            <div class="crypto-tab out-of-stock" data-crypto="ethereum">
+                <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum">
+                <span>Flash Ethereum</span>
+                <div class="stock-badge">Out of Stock</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plans Section -->
+    <section class="plans" id="plans">
+        <div class="container">
+            <!-- Flash Creepto Banner -->
+            <div class="flash-creepto-banner fade-in">
+                <img src="https://i.ibb.co/twCmps8S/flash-Creepto.jpg" alt="Flash Creepto" loading="lazy">
+            </div>
+            
+            <div class="section-title fade-in">
+                <h2>Premium Flash Creepto Options</h2>
+                <p>Select your preferred crypto and enjoy premium generation services. All options include 180 days validity and 400+ transfer capacity.</p>
+            </div>
+            
+            <div class="plans-grid" id="crypto-options">
+            
+            <!-- USDT TRC20 Plan -->
+                <div class="plan-card fade-in" data-crypto="usdt-trc20">
+                    <div class="crypto-logo usdt-logo">
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
+                    </div>
+                    <h3>Flash USDT (TRC20)</h3>
+                    <div class="network-type">Tron Network</div>
+                    <div class="plan-description">
+                        USDT generation on TRC20 network with instant transfers and zero gas fees.
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 180 Days Validity</li>
+                        <li><i class="fas fa-check"></i> 400+ Transfers</li>
+                        <li><i class="fas fa-check"></i> TRC20 Network</li>
+                        <li><i class="fas fa-check"></i>Instant Delivery 🚚</li>
+                    </ul>
+                    <form action="{{ url_for('wallet_details') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="crypto" value="USDT">
+                        <input type="hidden" name="network" value="TRC20">
+                        <input type="hidden" name="plan" value="Flash USDT (TRC20)">
+                        <button type="submit" class="select-plan-btn">Buy Now</button>
+                    </form>
+                </div>
+            
+            <!-- USDT BEP20 Plan -->
+                <div class="plan-card fade-in" data-crypto="usdt-bep20">
+                    <div class="crypto-logo usdt-logo">
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
+                    </div>
+                    <h3>Flash USDT (BEP20)</h3>
+                    <div class="network-type">Binance Smart Chain</div>
+                    <div class="plan-description">
+                        USDT generation on BEP20 network with low transaction fees and fast processing.
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 180 Days Validity</li>
+                        <li><i class="fas fa-check"></i> 400+ Transfers</li>
+                        <li><i class="fas fa-check"></i> BEP20 Network</li>
+                        <li><i class="fas fa-check"></i>Instant Delivery 🚚</li>
+                    </ul>
+                    <form action="{{ url_for('wallet_details') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="crypto" value="USDT">
+                        <input type="hidden" name="network" value="BEP20">
+                        <input type="hidden" name="plan" value="Flash USDT (BEP20)">
+                        <button type="submit" class="select-plan-btn">Buy Now</button>
+                    </form>
+                </div>
+            
+            
+                <!-- Bitcoin Plan -->
+                <div class="plan-card popular fade-in" data-crypto="bitcoin">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="crypto-logo bitcoin-logo">
+                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin">
+                    </div>
+                    <h3>Flash Bitcoin</h3>
+                    <div class="network-type">BTC Network</div>
+                    <div class="plan-description">
+                        Premium Bitcoin generation with secure wallet integration and instant processing.
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 180 Days Validity</li>
+                        <li><i class="fas fa-check"></i> 400+ Transfers</li>
+                        <li><i class="fas fa-check"></i> Secure BTC Wallet</li>
+                        <li><i class="fas fa-check"></i> 24/7 Customer Support</li>
+                        <li><i class="fas fa-check"></i>Instant Delivery 🚚</li>
+                    </ul>
+                    <form action="{{ url_for('wallet_details') }}" method="POST" style="margin: 0;">
+                        <input type="hidden" name="crypto" value="Bitcoin">
+                        <input type="hidden" name="network" value="BTC">
+                        <input type="hidden" name="plan" value="Flash Bitcoin">
+                        <button type="submit" class="select-plan-btn">Buy Now</button>
+                    </form>
+                </div>            
+                <!-- Ethereum Plan - Out of Stock -->
+                <div class="plan-card fade-in out-of-stock-plan" data-crypto="ethereum">
+                    <div class="crypto-logo eth-logo">
+                        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum">
+                    </div>
+                    <h3>Flash Ethereum</h3>
+                    <div class="network-type">Ethereum Network</div>
+                    <div class="plan-description">
+                        Ethereum generation with smart contract integration and premium features.
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 180 Days Validity</li>
+                        <li><i class="fas fa-check"></i> 400+ Transfers</li>
+                        <li><i class="fas fa-check"></i> ETH Network</li>
+                        <li><i class="fas fa-check"></i> Smart Contract Support</li>
+                        <li><i class="fas fa-check"></i> Premium Features</li>
+                    </ul>
+                    <div class="out-of-stock-overlay">
+                        <span>Temporarily Unavailable</span>
+                    </div>
+                    <button class="select-plan-btn disabled" disabled>Out of Stock</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Flash Creepto<span> Premium Crypto Since 2018</span></h3>
+                    <p>Providing elite Flash Creepto services since 2018. Trusted by over 50,000 premium clients globally with unmatched security and reliability.</p>
+                    <div class="contact-info">
+                        <div>
+                            <i class="fas fa-envelope"></i>
+                            <span>support@flashcreepto.com</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-globe"></i>
+                            <span>Available Worldwide 24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2018-2026 Flash Creepto. All rights reserved. | Premium Crypto Solutions Since 2018
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <div class="fab" onclick="document.getElementById('plans').scrollIntoView({behavior: 'smooth'})">
+        <i class="fas fa-bolt"></i>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crypto Tab Functionality
+            const cryptoTabs = document.querySelectorAll('.crypto-tab:not(.out-of-stock)');
+            const cryptoOptions = document.querySelectorAll('.plan-card');
+            const heroCryptoLogo = document.getElementById('hero-crypto-logo');
+            const cryptoOrb = document.querySelector('.crypto-orb');
+            
+            // Define logos for each crypto
+            const cryptoLogos = {
+                'bitcoin': 'https://cryptologos.cc/logos/bitcoin-btc-logo.png',
+                'usdt-bep20': 'https://cryptologos.cc/logos/tether-usdt-logo.png',
+                'usdt-trc20': 'https://cryptologos.cc/logos/tether-usdt-logo.png',
+                'ethereum': 'https://cryptologos.cc/logos/ethereum-eth-logo.png'
+            };
+            
+            // Define colors for each crypto
+            const cryptoColors = {
+                'bitcoin': ['#f7931a', '#ffb155'],
+                'usdt-bep20': ['#26a17b', '#4cd8b1'],
+                'usdt-trc20': ['#26a17b', '#4cd8b1'],
+                'ethereum': ['#627eea', '#8fa3ff']
+            };
+            
+            // Function to update active crypto
+            function setActiveCrypto(crypto) {
+                // Update tabs (skip out of stock)
+                document.querySelectorAll('.crypto-tab').forEach(tab => {
+                    if (tab.dataset.crypto === crypto && !tab.classList.contains('out-of-stock')) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
+                
+                // Update hero logo
+                heroCryptoLogo.src = cryptoLogos[crypto];
+                
+                // Update hero orb gradient
+                const [color1, color2] = cryptoColors[crypto];
+                cryptoOrb.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+                
+                // Update orb ring colors
+                const orbRings = document.querySelectorAll('.orb-ring');
+                orbRings.forEach(ring => {
+                    ring.style.borderColor = `${color1}40`;
+                });
+                
+                // Update floating elements for active crypto
+                const floatingElements = document.querySelectorAll('.floating-element');
+                floatingElements[0].style.backgroundColor = color1;
+            }
+            
+            // Add click event to tabs (excluding out of stock)
+            cryptoTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const crypto = this.dataset.crypto;
+                    setActiveCrypto(crypto);
+                });
+            });
+            
+            // Default to Bitcoin - but don't scroll
+            setActiveCrypto('bitcoin');
+            
+            // Fade-in animation on scroll
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const fadeInOnScroll = function() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 120;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            // Initial check
+            fadeInOnScroll();
+            
+            // Check on scroll
+            window.addEventListener('scroll', fadeInOnScroll);
+            
+            // Add hover effects to plan cards
+            const planCards = document.querySelectorAll('.plan-card:not(.out-of-stock-plan)');
+            planCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Add subtle parallax effect to hero
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const heroVisual = document.querySelector('.hero-visual');
+                
+                if (heroVisual) {
+                    heroVisual.style.transform = `translateY(${scrolled * 0.04}px)`;
+                }
+            });
+        });
+        
+        // Add smooth button click effects
+        document.querySelectorAll('.select-plan-btn:not(.disabled)').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size/2;
+                const y = e.clientY - rect.top - size/2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.7);
+                    transform: scale(0);
+                    animation: ripple-animation 0.6s linear;
+                    width: ${size}px;
+                    height: ${size}px;
+                    top: ${y}px;
+                    left: ${x}px;
+                `;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+        
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
