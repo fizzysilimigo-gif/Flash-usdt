@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Details - Flash Creepto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary: #00d4aa;
+            --primary-dark: #00b894;
+            --primary-gradient: linear-gradient(135deg, #00d4aa 0%, #26a17b 100%);
+            --secondary: #2d3436;
+            --text-light: #636e72;
+            --white: #ffffff;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --border-radius: 20px;
+            --disabled-bg: #e9ecef;
+            --disabled-color: #adb5bd;
+            --warning-bg: #fff3cd;
+            --warning-color: #856404;
+            --warning-border: #ffc107;
+            --error-bg: #f8d7da;
+            --error-color: #721c24;
+            --error-border: #f5c6cb;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .wallet-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wallet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+            transform: translateX(-5px);
+        }
+
+        .crypto-badge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 212, 170, 0.1);
+            border-radius: 15px;
+        }
+
+        .crypto-badge i {
+            font-size: 40px;
+            color: var(--primary);
+        }
+
+        .crypto-badge h2 {
+            font-size: 24px;
+            color: var(--secondary);
+        }
+
+        .crypto-badge p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 15px;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            z-index: 1;
+        }
+
+        .input-with-icon input,
+        .input-with-icon textarea {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #eef2f6;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .input-with-icon textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .input-with-icon input:focus,
+        .input-with-icon textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: var(--white);
+        }
+
+        .amount-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .amount-control input {
+            flex: 1;
+            text-align: center;
+            font-weight: 600;
+            padding: 15px;
+            border: 2px solid #eef2f6;
+            border-radius: 12px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .amount-control input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .amount-control input.error {
+            border-color: #dc3545;
+            background-color: #fff8f8;
+        }
+
+        .amount-control input:disabled {
+            background: var(--disabled-bg);
+            border-color: #dee2e6;
+            color: var(--disabled-color);
+            cursor: not-allowed;
+        }
+
+        /* Remove spinner arrows for number input */
+        .amount-control input[type=number]::-webkit-inner-spin-button,
+        .amount-control input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .amount-control input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .amount-btn {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .amount-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 212, 170, 0.3);
+        }
+
+        .amount-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: linear-gradient(135deg, #adb5bd 0%, #868e96 100%);
+            transform: none;
+        }
+
+        .limits {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-light);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .limits.disabled {
+            color: var(--disabled-color);
+        }
+
+        .price-display {
+            background: linear-gradient(135deg, #f6f9fc 0%, #eef2f6 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .price-display.disabled {
+            background: linear-gradient(135deg, #f1f3f5 0%, #e9ecef 100%);
+            opacity: 0.7;
+        }
+
+        .price-display .label {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .price-display .amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .price-display .amount span {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+
+        .message-container {
+            min-height: 0px;
+            margin: 0px 0;
+            transition: all 0.3s ease;
+        }
+
+        .message-container.has-message {
+            min-height: 60px;
+            margin: 15px 0;
+        }
+
+        .warning-message {
+            background: var(--warning-bg);
+            color: var(--warning-color);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            border-left: 4px solid var(--warning-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .error-message {
+            background: var(--error-bg);
+            color: var(--error-color);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            border-left: 4px solid var(--error-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .warning-message i, .error-message i {
+            font-size: 18px;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .next-btn:hover:not(:disabled)::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .next-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.4);
+        }
+
+        .next-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: linear-gradient(135deg, #adb5bd 0%, #868e96 100%);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .info-text {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .info-text i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        .alert {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .alert i {
+            margin-right: 8px;
+        }
+
+        .wallet-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .wallet-status i {
+            font-size: 14px;
+        }
+
+        .wallet-status .valid {
+            color: var(--primary);
+        }
+
+        .wallet-status .invalid {
+            color: #dc3545;
+        }
+
+        @media (max-width: 480px) {
+            .wallet-card {
+                padding: 25px;
+            }
+            
+            .amount-btn {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .price-display .amount {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('index') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Plans
+        </a>
+        
+        <div class="wallet-card">
+            <div class="crypto-badge">
+                {% if crypto == 'Bitcoin' %}
+                    <i class="fab fa-bitcoin"></i>
+                {% else %}
+                    <i class="fas fa-dollar-sign"></i>
+                {% endif %}
+                <div>
+                    <h2>{{ plan }}</h2>
+                    <p>Network: {{ network }}</p>
+                </div>
+            </div>
+
+            {% if crypto == 'Bitcoin' %}
+            <div class="alert">
+                <i class="fas fa-info-circle"></i>
+                <strong>Pricing:</strong> 0.05 BTC = $25
+            </div>
+            {% else %}
+            <div class="alert">
+                <i class="fas fa-info-circle"></i>
+                <strong>Pricing:</strong> 1$ = 25 Flash USDT | Minimum: 500 Flash USDT | Maximum: 100,000 Flash USDT
+            </div>
+            {% endif %}
+
+            <form id="walletForm" action="{{ url_for('submit_wallet') }}" method="POST">
+                <input type="hidden" name="crypto" value="{{ crypto }}">
+                
+                <div class="form-group">
+                    <label>Your Wallet Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-wallet"></i>
+                        <textarea name="wallet_address" id="walletAddress" placeholder="Enter your wallet address" required></textarea>
+                    </div>
+                    <div class="wallet-status" id="walletStatus">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Use copy paste method for no mistake</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        {% if crypto == 'Bitcoin' %}
+                            Amount (BTC)
+                        {% else %}
+                            Amount (Flash USDT)
+                        {% endif %}
+                    </label>
+                    
+                    <div class="amount-control">
+                        <button type="button" class="amount-btn" id="decreaseBtn" {% if crypto == 'Bitcoin' %}data-step="0.05"{% else %}data-step="25"{% endif %} disabled>
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        
+                        <input type="number" 
+                               name="amount" 
+                               id="amountInput"
+                               {% if crypto == 'Bitcoin' %}
+                               step="0.05"
+                               {% else %}
+                               step="1"
+                               {% endif %}
+                               min="{% if crypto == 'Bitcoin' %}0.05{% else %}500{% endif %}"
+                               max="{% if crypto == 'Bitcoin' %}2.0{% else %}100000{% endif %}"
+                               value="{% if crypto == 'Bitcoin' %}0.05{% else %}{% endif %}"
+                               placeholder="{% if crypto != 'Bitcoin' %}Enter amount (500-100000){% endif %}"
+                               {% if crypto == 'Bitcoin' %}disabled{% else %}disabled{% endif %}
+                               required>
+                        
+                        <button type="button" class="amount-btn" id="increaseBtn" {% if crypto == 'Bitcoin' %}data-step="0.05"{% else %}data-step="25"{% endif %} disabled>
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <div class="limits" id="limits">
+                        <span>Min: {% if crypto == 'Bitcoin' %}0.05 BTC{% else %}500 Flash USDT{% endif %}</span>
+                        <span>Max: {% if crypto == 'Bitcoin' %}2.0 BTC{% else %}100,000 Flash USDT{% endif %}</span>
+                    </div>
+                </div>
+
+                <!-- Message Container for Warnings -->
+                <div class="message-container" id="messageContainer"></div>
+
+                <div class="price-display" id="priceDisplay">
+                    <div class="label">Total Payment Required</div>
+                    <div class="amount" id="priceAmount">
+                        $0.00
+                    </div>
+                </div>
+
+                <button type="submit" class="next-btn" id="submitBtn" disabled>
+                    Enter Wallet Address First <i class="fas fa-lock" style="margin-left: 10px;"></i>
+                </button>
+            </form>
+
+            <div class="info-text">
+                <i class="fas fa-shield-alt"></i>
+                Your wallet address is encrypted and secure
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const crypto = "{{ crypto }}";
+            const walletAddress = document.getElementById('walletAddress');
+            const amountInput = document.getElementById('amountInput');
+            const decreaseBtn = document.getElementById('decreaseBtn');
+            const increaseBtn = document.getElementById('increaseBtn');
+            const priceDisplay = document.getElementById('priceAmount');
+            const priceDisplayDiv = document.querySelector('.price-display');
+            const submitBtn = document.getElementById('submitBtn');
+            const walletStatus = document.getElementById('walletStatus');
+            const limits = document.getElementById('limits');
+            const messageContainer = document.getElementById('messageContainer');
+            
+            let step = crypto === 'Bitcoin' ? 0.05 : 25;
+            let minAmount = crypto === 'Bitcoin' ? 0.05 : 500;
+            let maxAmount = crypto === 'Bitcoin' ? 2.0 : 100000;
+            
+            // For USDT, start with empty value
+            if (crypto !== 'Bitcoin') {
+                amountInput.value = '';
+                updatePrice(0);
+            }
+            
+            // Function to show warning/error messages
+            function showMessage(type, message) {
+                if (!message) {
+                    // Clear message
+                    messageContainer.innerHTML = '';
+                    messageContainer.classList.remove('has-message');
+                    return;
+                }
+                
+                let messageHtml = '';
+                if (type === 'warning') {
+                    messageHtml = `
+                        <div class="warning-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>${message}</span>
+                        </div>
+                    `;
+                } else if (type === 'error') {
+                    messageHtml = `
+                        <div class="error-message">
+                            <i class="fas fa-times-circle"></i>
+                            <span>${message}</span>
+                        </div>
+                    `;
+                }
+                
+                messageContainer.innerHTML = messageHtml;
+                messageContainer.classList.add('has-message');
+            }
+            
+            // Function to validate wallet address (basic validation)
+            function isValidWalletAddress(address) {
+                address = address.trim();
+                if (!address) return false;
+                
+                if (crypto === 'Bitcoin') {
+                    // Basic Bitcoin address validation (starts with 1,3, or bc1 and minimum length)
+                    return (address.startsWith('1') || address.startsWith('3') || address.startsWith('bc1')) && address.length >= 26;
+                } else {
+                    // Basic USDT address validation (for various chains)
+                    return address.length >= 30; // Basic length check for USDT addresses
+                }
+            }
+            
+            // Function to validate amount and show appropriate message
+            function validateAmount(amount) {
+                if (crypto === 'Bitcoin') {
+                    return true; // Bitcoin validation handled separately
+                }
+                
+                // Clear previous messages
+                showMessage('');
+                
+                if (amount === '' || isNaN(amount) || amount === 0) {
+                    amountInput.classList.add('error');
+                    return false;
+                } else if (amount < minAmount) {
+                    showMessage('error', `Minimum limit is ${minAmount} Flash USDT`);
+                    amountInput.classList.add('error');
+                    return false;
+                } else if (amount > maxAmount) {
+                    showMessage('error', `Maximum limit is ${maxAmount.toLocaleString()} Flash USDT`);
+                    amountInput.classList.add('error');
+                    return false;
+                } else {
+                    amountInput.classList.remove('error');
+                    return true;
+                }
+            }
+            
+            // Function to enable/disable all controls
+            function setControlsEnabled(enabled) {
+                // Amount controls
+                amountInput.disabled = !enabled;
+                decreaseBtn.disabled = !enabled;
+                increaseBtn.disabled = !enabled;
+                
+                // Update visual states
+                if (enabled) {
+                    priceDisplayDiv.classList.remove('disabled');
+                    limits.classList.remove('disabled');
+                    walletStatus.innerHTML = '<i class="fas fa-check-circle valid"></i> <span class="valid">Wallet address verified Successfully </span>';
+                    
+                    // Check if amount is valid to enable submit button
+                    let currentAmount = parseFloat(amountInput.value) || 0;
+                    if (crypto === 'Bitcoin') {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                    } else {
+                        // For USDT, check if amount is valid
+                        if (validateAmount(currentAmount)) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                        } else {
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = 'Enter Valid Amount <i class="fas fa-lock" style="margin-left: 10px;"></i>';
+                        }
+                    }
+                } else {
+                    priceDisplayDiv.classList.add('disabled');
+                    limits.classList.add('disabled');
+                    walletStatus.innerHTML = '<i class="fas fa-info-circle"></i> <span>Enter a valid wallet address to enable all options</span>';
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = 'Enter Wallet Address First <i class="fas fa-lock" style="margin-left: 10px;"></i>';
+                    showMessage('');
+                }
+            }
+            
+            // Check wallet address on input
+            walletAddress.addEventListener('input', function() {
+                const address = this.value;
+                const isValid = isValidWalletAddress(address);
+                
+                setControlsEnabled(isValid);
+                
+                // Update price if controls are enabled and amount is valid
+                if (isValid && crypto !== 'Bitcoin') {
+                    let currentAmount = parseFloat(amountInput.value) || 0;
+                    if (currentAmount >= minAmount && currentAmount <= maxAmount) {
+                        updatePrice(currentAmount);
+                    } else {
+                        // Don't show price for invalid amounts
+                        priceDisplay.textContent = '$0.00';
+                    }
+                } else if (isValid && crypto === 'Bitcoin') {
+                    let currentAmount = parseFloat(amountInput.value) || minAmount;
+                    updatePrice(currentAmount);
+                }
+            });
+            
+            // Also check on blur (when user leaves the field)
+            walletAddress.addEventListener('blur', function() {
+                const address = this.value;
+                const isValid = isValidWalletAddress(address);
+                
+                if (!isValid && address.trim() !== '') {
+                    walletStatus.innerHTML = '<i class="fas fa-exclamation-circle invalid"></i> <span class="invalid">Invalid wallet address format</span>';
+                }
+            });
+            
+            // Function to update amount with validation
+            function updateAmount(value) {
+                if (crypto === 'Bitcoin') {
+                    // For Bitcoin, keep the original behavior
+                    value = Math.max(minAmount, Math.min(maxAmount, value));
+                    value = Math.round(value * 100) / 100;
+                    value = Math.round(value / step) * step;
+                    amountInput.value = value.toFixed(2);
+                    updatePrice(value);
+                } else {
+                    // For USDT, allow any value between min and max
+                    // Round to nearest integer for clean display
+                    value = Math.round(value);
+                    
+                    // Ensure within limits
+                    if (value < minAmount) {
+                        value = minAmount;
+                    } else if (value > maxAmount) {
+                        value = maxAmount;
+                    }
+                    
+                    amountInput.value = value;
+                    
+                    // Validate and show message
+                    let isValid = validateAmount(value);
+                    
+                    // Only update price if amount is valid
+                    if (isValid) {
+                        updatePrice(value);
+                    } else {
+                        priceDisplay.textContent = '$0.00';
+                    }
+                    
+                    // Update submit button state
+                    if (isValid) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                    } else {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = 'Enter Valid Amount <i class="fas fa-lock" style="margin-left: 10px;"></i>';
+                    }
+                }
+            }
+            
+            // Calculate and update price
+            function updatePrice(amount) {
+                let price;
+                if (crypto === 'Bitcoin') {
+                    // 0.05 BTC = $25
+                    price = (amount / 0.05) * 25;
+                } else {
+                    // Only calculate price for valid amounts
+                    if (amount >= minAmount && amount <= maxAmount) {
+                        // 1$ = 25 flash USDT
+                        price = amount * 0.04; // 0.04$ per flash USDT
+                    } else {
+                        price = 0;
+                    }
+                }
+                
+                if (!isNaN(price) && isFinite(price) && price > 0) {
+                    priceDisplay.textContent = `$${price.toFixed(2)}`;
+                } else {
+                    priceDisplay.textContent = `$0.00`;
+                }
+            }
+            
+            // Event listeners (only work when enabled)
+            amountInput.addEventListener('input', function() {
+                if (!this.disabled) {
+                    let value = parseFloat(this.value) || 0;
+                    
+                    if (crypto === 'Bitcoin') {
+                        updateAmount(value);
+                    } else {
+                        // For USDT, just validate without auto-correction on input
+                        let isValid = validateAmount(value);
+                        
+                        if (isValid) {
+                            updatePrice(value);
+                        } else {
+                            priceDisplay.textContent = '$0.00';
+                        }
+                        
+                        // Update submit button state
+                        if (isValid) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                        } else {
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = 'Enter Valid Amount <i class="fas fa-lock" style="margin-left: 10px;"></i>';
+                        }
+                    }
+                }
+            });
+            
+            amountInput.addEventListener('blur', function() {
+                if (!this.disabled && crypto !== 'Bitcoin') {
+                    let value = parseFloat(this.value) || 0;
+                    
+                    // On blur, round to nearest integer and ensure within limits
+                    if (value > 0) {
+                        value = Math.round(value);
+                        if (value < minAmount) {
+                            value = minAmount;
+                        } else if (value > maxAmount) {
+                            value = maxAmount;
+                        }
+                        amountInput.value = value;
+                        validateAmount(value);
+                        updatePrice(value);
+                    }
+                }
+            });
+            
+            decreaseBtn.addEventListener('click', function() {
+                if (!this.disabled) {
+                    let currentValue = parseFloat(amountInput.value) || minAmount;
+                    let newValue = currentValue - step;
+                    
+                    // Don't go below min
+                    if (newValue < minAmount) {
+                        newValue = minAmount;
+                    }
+                    
+                    updateAmount(newValue);
+                }
+            });
+            
+            increaseBtn.addEventListener('click', function() {
+                if (!this.disabled) {
+                    let currentValue = parseFloat(amountInput.value) || minAmount;
+                    let newValue = currentValue + step;
+                    
+                    // Don't go above max
+                    if (newValue > maxAmount) {
+                        newValue = maxAmount;
+                    }
+                    
+                    updateAmount(newValue);
+                }
+            });
+            
+            // Initial check for wallet address (in case of pre-filled value)
+            if (walletAddress.value.trim() !== '') {
+                const isValid = isValidWalletAddress(walletAddress.value);
+                setControlsEnabled(isValid);
+            }
+            
+            // Form validation
+            document.getElementById('walletForm').addEventListener('submit', function(e) {
+                const walletAddress = document.querySelector('textarea[name="wallet_address"]').value.trim();
+                const amount = parseFloat(amountInput.value) || 0;
+                
+                if (!isValidWalletAddress(walletAddress)) {
+                    e.preventDefault();
+                    alert('Please enter a valid wallet address');
+                    return;
+                }
+                
+                if (crypto !== 'Bitcoin') {
+                    if (!validateAmount(amount)) {
+                        e.preventDefault();
+                        return;
+                    }
+                } else {
+                    if (amount < minAmount || amount > maxAmount) {
+                        e.preventDefault();
+                        alert(`Please enter a valid amount between ${minAmount} and ${maxAmount}`);
+                        return;
+                    }
+                }
+                
+                // Additional validation if needed
+                if (crypto === 'Bitcoin' && walletAddress.length < 26) {
+                    e.preventDefault();
+                    alert('Please enter a valid Bitcoin wallet address');
+                    return;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
