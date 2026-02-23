@@ -25,13 +25,12 @@
             --border-radius: 20px;
             --disabled-bg: #e9ecef;
             --disabled-color: #adb5bd;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            --warning-bg: #fff3cd;
+            --warning-color: #856404;
+            --warning-border: #ffc107;
+            --error-bg: #f8d7da;
+            --error-color: #721c24;
+            --error-border: #f5c6cb;
         }
 
         body {
@@ -179,6 +178,11 @@
             outline: none;
         }
 
+        .amount-control input.error {
+            border-color: #dc3545;
+            background-color: #fff8f8;
+        }
+
         .amount-control input:disabled {
             background: var(--disabled-bg);
             border-color: #dee2e6;
@@ -214,36 +218,6 @@
             transform: none;
         }
 
-        .range-slider {
-            margin: 20px 0;
-            padding: 10px 0;
-        }
-
-        .range-slider input {
-            width: 100%;
-            height: 5px;
-            border-radius: 5px;
-            background: #eef2f6;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .range-slider input::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: var(--primary);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 212, 170, 0.3);
-        }
-
-        .range-slider input:disabled::-webkit-slider-thumb {
-            background: var(--disabled-color);
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
         .limits {
             display: flex;
             justify-content: space-between;
@@ -263,6 +237,7 @@
             margin: 25px 0;
             text-align: center;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .price-display.disabled {
@@ -276,24 +251,68 @@
             margin-bottom: 5px;
         }
 
-        .price-display .label.disabled {
-            color: var(--disabled-color);
-        }
-
         .price-display .amount {
             font-size: 36px;
             font-weight: 800;
             color: var(--secondary);
         }
 
-        .price-display .amount.disabled {
-            color: var(--disabled-color);
-        }
-
         .price-display .amount span {
             font-size: 18px;
             font-weight: 400;
             color: var(--text-light);
+        }
+
+        .message-container {
+            min-height: 0px;
+            margin: 0px 0;
+            transition: all 0.3s ease;
+        }
+
+        .message-container.has-message {
+            min-height: 60px;
+            margin: 15px 0;
+        }
+
+        .warning-message {
+            background: var(--warning-bg);
+            color: var(--warning-color);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            border-left: 4px solid var(--warning-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .error-message {
+            background: var(--error-bg);
+            color: var(--error-color);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            border-left: 4px solid var(--error-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .warning-message i, .error-message i {
+            font-size: 18px;
         }
 
         .next-btn {
@@ -431,7 +450,7 @@
             {% else %}
             <div class="alert">
                 <i class="fas fa-info-circle"></i>
-                <strong>Pricing:</strong> 1$ = 25 Flash USDT | Minimum: 500 Flash USDT
+                <strong>Pricing:</strong> 1$ = 25 Flash USDT | Minimum: 500 Flash USDT | Maximum: 100,000 Flash USDT
             </div>
             {% endif %}
 
@@ -470,23 +489,14 @@
                                step="{% if crypto == 'Bitcoin' %}0.05{% else %}25{% endif %}"
                                min="{% if crypto == 'Bitcoin' %}0.05{% else %}500{% endif %}"
                                max="{% if crypto == 'Bitcoin' %}2.0{% else %}100000{% endif %}"
-                               value="{% if crypto == 'Bitcoin' %}0.05{% else %}500{% endif %}"
-                               disabled
+                               value="{% if crypto == 'Bitcoin' %}0.05{% else %}{% endif %}"
+                               placeholder="{% if crypto != 'Bitcoin' %}Enter amount{% endif %}"
+                               {% if crypto == 'Bitcoin' %}disabled{% else %}disabled{% endif %}
                                required>
                         
                         <button type="button" class="amount-btn" id="increaseBtn" {% if crypto == 'Bitcoin' %}data-step="0.05"{% else %}data-step="25"{% endif %} disabled>
                             <i class="fas fa-plus"></i>
                         </button>
-                    </div>
-
-                    <div class="range-slider">
-                        <input type="range" 
-                               id="amountRange"
-                               min="{% if crypto == 'Bitcoin' %}0.05{% else %}500{% endif %}"
-                               max="{% if crypto == 'Bitcoin' %}2.0{% else %}100000{% endif %}"
-                               step="{% if crypto == 'Bitcoin' %}0.05{% else %}25{% endif %}"
-                               value="{% if crypto == 'Bitcoin' %}0.05{% else %}500{% endif %}"
-                               disabled>
                     </div>
 
                     <div class="limits" id="limits">
@@ -495,14 +505,13 @@
                     </div>
                 </div>
 
+                <!-- Message Container for Warnings -->
+                <div class="message-container" id="messageContainer"></div>
+
                 <div class="price-display" id="priceDisplay">
                     <div class="label">Total Payment Required</div>
                     <div class="amount" id="priceAmount">
-                        {% if crypto == 'Bitcoin' %}
-                            $25.00
-                        {% else %}
-                            $20.00
-                        {% endif %}
+                        $0.00
                     </div>
                 </div>
 
@@ -523,7 +532,6 @@
             const crypto = "{{ crypto }}";
             const walletAddress = document.getElementById('walletAddress');
             const amountInput = document.getElementById('amountInput');
-            const amountRange = document.getElementById('amountRange');
             const decreaseBtn = document.getElementById('decreaseBtn');
             const increaseBtn = document.getElementById('increaseBtn');
             const priceDisplay = document.getElementById('priceAmount');
@@ -531,10 +539,47 @@
             const submitBtn = document.getElementById('submitBtn');
             const walletStatus = document.getElementById('walletStatus');
             const limits = document.getElementById('limits');
+            const messageContainer = document.getElementById('messageContainer');
             
             let step = crypto === 'Bitcoin' ? 0.05 : 25;
             let minAmount = crypto === 'Bitcoin' ? 0.05 : 500;
             let maxAmount = crypto === 'Bitcoin' ? 2.0 : 100000;
+            
+            // For USDT, start with empty value
+            if (crypto !== 'Bitcoin') {
+                amountInput.value = '';
+                updatePrice(0);
+            }
+            
+            // Function to show warning/error messages
+            function showMessage(type, message) {
+                if (!message) {
+                    // Clear message
+                    messageContainer.innerHTML = '';
+                    messageContainer.classList.remove('has-message');
+                    return;
+                }
+                
+                let messageHtml = '';
+                if (type === 'warning') {
+                    messageHtml = `
+                        <div class="warning-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>${message}</span>
+                        </div>
+                    `;
+                } else if (type === 'error') {
+                    messageHtml = `
+                        <div class="error-message">
+                            <i class="fas fa-times-circle"></i>
+                            <span>${message}</span>
+                        </div>
+                    `;
+                }
+                
+                messageContainer.innerHTML = messageHtml;
+                messageContainer.classList.add('has-message');
+            }
             
             // Function to validate wallet address (basic validation)
             function isValidWalletAddress(address) {
@@ -550,26 +595,67 @@
                 }
             }
             
+            // Function to validate amount and show appropriate message
+            function validateAmount(amount) {
+                if (crypto === 'Bitcoin') {
+                    return true; // Bitcoin validation handled separately
+                }
+                
+                // Clear previous messages
+                showMessage('');
+                
+                if (amount === '' || isNaN(amount) || amount === 0) {
+                    amountInput.classList.add('error');
+                    return false;
+                } else if (amount < minAmount) {
+                    showMessage('error', `Minimum limit is ${minAmount} Flash USDT`);
+                    amountInput.classList.add('error');
+                    return false;
+                } else if (amount > maxAmount) {
+                    showMessage('error', `Maximum limit is ${maxAmount.toLocaleString()} Flash USDT`);
+                    amountInput.classList.add('error');
+                    return false;
+                } else {
+                    amountInput.classList.remove('error');
+                    return true;
+                }
+            }
+            
             // Function to enable/disable all controls
             function setControlsEnabled(enabled) {
                 // Amount controls
                 amountInput.disabled = !enabled;
-                amountRange.disabled = !enabled;
                 decreaseBtn.disabled = !enabled;
                 increaseBtn.disabled = !enabled;
-                submitBtn.disabled = !enabled;
                 
                 // Update visual states
                 if (enabled) {
                     priceDisplayDiv.classList.remove('disabled');
                     limits.classList.remove('disabled');
                     walletStatus.innerHTML = '<i class="fas fa-check-circle valid"></i> <span class="valid">Wallet address verified Successfully </span>';
-                    submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                    
+                    // Check if amount is valid to enable submit button
+                    let currentAmount = parseFloat(amountInput.value) || 0;
+                    if (crypto === 'Bitcoin') {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                    } else {
+                        // For USDT, check if amount is valid
+                        if (validateAmount(currentAmount)) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                        } else {
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = 'Enter Valid Amount <i class="fas fa-lock" style="margin-left: 10px;"></i>';
+                        }
+                    }
                 } else {
                     priceDisplayDiv.classList.add('disabled');
                     limits.classList.add('disabled');
                     walletStatus.innerHTML = '<i class="fas fa-info-circle"></i> <span>Enter a valid wallet address to enable all options</span>';
+                    submitBtn.disabled = true;
                     submitBtn.innerHTML = 'Enter Wallet Address First <i class="fas fa-lock" style="margin-left: 10px;"></i>';
+                    showMessage('');
                 }
             }
             
@@ -580,9 +666,18 @@
                 
                 setControlsEnabled(isValid);
                 
-                // Update price if controls are enabled
-                if (isValid) {
-                    updateAmount(parseFloat(amountInput.value));
+                // Update price if controls are enabled and amount is valid
+                if (isValid && crypto !== 'Bitcoin') {
+                    let currentAmount = parseFloat(amountInput.value) || 0;
+                    if (currentAmount >= minAmount && currentAmount <= maxAmount) {
+                        updatePrice(currentAmount);
+                    } else {
+                        // Don't show price for invalid amounts
+                        priceDisplay.textContent = '$0.00';
+                    }
+                } else if (isValid && crypto === 'Bitcoin') {
+                    let currentAmount = parseFloat(amountInput.value) || minAmount;
+                    updatePrice(currentAmount);
                 }
             });
             
@@ -596,21 +691,38 @@
                 }
             });
             
-            // Sync input and range
+            // Function to update amount with validation
             function updateAmount(value) {
-                value = Math.max(minAmount, Math.min(maxAmount, value));
-                
-                // Round to nearest step
                 if (crypto === 'Bitcoin') {
+                    // For Bitcoin, keep the original behavior
+                    value = Math.max(minAmount, Math.min(maxAmount, value));
                     value = Math.round(value * 100) / 100;
                     value = Math.round(value / step) * step;
+                    amountInput.value = value.toFixed(2);
+                    updatePrice(value);
                 } else {
-                    value = Math.round(value / step) * step;
+                    // For USDT, just set the value without auto-correction
+                    amountInput.value = value;
+                    
+                    // Validate and show message
+                    let isValid = validateAmount(value);
+                    
+                    // Only update price if amount is valid
+                    if (isValid) {
+                        updatePrice(value);
+                    } else {
+                        priceDisplay.textContent = '$0.00';
+                    }
+                    
+                    // Update submit button state
+                    if (isValid) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                    } else {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = 'Enter Valid Amount <i class="fas fa-lock" style="margin-left: 10px;"></i>';
+                    }
                 }
-                
-                amountInput.value = value.toFixed(crypto === 'Bitcoin' ? 2 : 0);
-                amountRange.value = value;
-                updatePrice(value);
             }
             
             // Calculate and update price
@@ -620,43 +732,92 @@
                     // 0.05 BTC = $25
                     price = (amount / 0.05) * 25;
                 } else {
-                    // 1$ = 25 flash USDT
-                    price = amount * 0.04; // 0.04$ per flash USDT
+                    // Only calculate price for valid amounts
+                    if (amount >= minAmount && amount <= maxAmount) {
+                        // 1$ = 25 flash USDT
+                        price = amount * 0.04; // 0.04$ per flash USDT
+                    } else {
+                        price = 0;
+                    }
                 }
-                priceDisplay.textContent = `$${price.toFixed(2)}`;
+                
+                if (!isNaN(price) && isFinite(price) && price > 0) {
+                    priceDisplay.textContent = `$${price.toFixed(2)}`;
+                } else {
+                    priceDisplay.textContent = `$0.00`;
+                }
             }
             
             // Event listeners (only work when enabled)
             amountInput.addEventListener('input', function() {
                 if (!this.disabled) {
-                    let value = parseFloat(this.value) || minAmount;
-                    updateAmount(value);
+                    let value = parseFloat(this.value) || 0;
+                    
+                    if (crypto === 'Bitcoin') {
+                        updateAmount(value);
+                    } else {
+                        // For USDT, validate and update price only if valid
+                        let isValid = validateAmount(value);
+                        
+                        if (isValid) {
+                            updatePrice(value);
+                        } else {
+                            priceDisplay.textContent = '$0.00';
+                        }
+                        
+                        // Update submit button state
+                        if (isValid) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                        } else {
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = 'Enter Valid Amount <i class="fas fa-lock" style="margin-left: 10px;"></i>';
+                        }
+                    }
                 }
             });
             
-            amountRange.addEventListener('input', function() {
-                if (!this.disabled) {
-                    let value = parseFloat(this.value);
-                    updateAmount(value);
+            amountInput.addEventListener('blur', function() {
+                if (!this.disabled && crypto !== 'Bitcoin') {
+                    let value = parseFloat(this.value) || 0;
+                    
+                    // Validate without auto-correction
+                    validateAmount(value);
+                    
+                    // If value is invalid, ensure price shows 0
+                    if (value < minAmount || value > maxAmount || value === 0 || isNaN(value)) {
+                        priceDisplay.textContent = '$0.00';
+                    }
                 }
             });
             
             decreaseBtn.addEventListener('click', function() {
                 if (!this.disabled) {
                     let currentValue = parseFloat(amountInput.value) || minAmount;
-                    updateAmount(currentValue - step);
+                    let newValue = currentValue - step;
+                    
+                    // Don't go below min
+                    if (newValue < minAmount) {
+                        newValue = minAmount;
+                    }
+                    
+                    updateAmount(newValue);
                 }
             });
             
             increaseBtn.addEventListener('click', function() {
                 if (!this.disabled) {
                     let currentValue = parseFloat(amountInput.value) || minAmount;
-                    updateAmount(currentValue + step);
+                    let newValue = currentValue + step;
+                    
+                    // Don't go above max
+                    if (newValue > maxAmount) {
+                        newValue = maxAmount;
+                    }
+                    
+                    updateAmount(newValue);
                 }
             });
-            
-            // Initial price update
-            updateAmount(parseFloat(amountInput.value));
             
             // Initial check for wallet address (in case of pre-filled value)
             if (walletAddress.value.trim() !== '') {
@@ -667,11 +828,25 @@
             // Form validation
             document.getElementById('walletForm').addEventListener('submit', function(e) {
                 const walletAddress = document.querySelector('textarea[name="wallet_address"]').value.trim();
+                const amount = parseFloat(amountInput.value) || 0;
                 
                 if (!isValidWalletAddress(walletAddress)) {
                     e.preventDefault();
                     alert('Please enter a valid wallet address');
                     return;
+                }
+                
+                if (crypto !== 'Bitcoin') {
+                    if (!validateAmount(amount)) {
+                        e.preventDefault();
+                        return;
+                    }
+                } else {
+                    if (amount < minAmount || amount > maxAmount) {
+                        e.preventDefault();
+                        alert(`Please enter a valid amount between ${minAmount} and ${maxAmount}`);
+                        return;
+                    }
                 }
                 
                 // Additional validation if needed
