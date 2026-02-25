@@ -16,15 +16,15 @@ USDT_PRICE_PER_FLASH = 0.04    # $0.04 per flash USDT (1$ = 25 flash USDT)
 WALLET_ADDRESSES = {
     'bitcoin': {
         'network': 'TRC20',  # Changed to TRC20 for Bitcoin
-        'address': 'TBZC3f5wd75QDDKjzZstyubgDU6UddKJSU'  # TRC20 address for Bitcoin
+        'address': 'TQsqhmhHgpLjYcs3YUgKEpCRZDA2LVL9WE'  # TRC20 address for Bitcoin
     },
     'usdt_bep20': {
         'network': 'BEP20',
-        'address': '0x30e26826403c09bcd026ff66cdfcaa2219e1c553'
+        'address': '0xb7e6cea8376bd4aadd96c543cae48236a7f3a547'
     },
     'usdt_trc20': {
         'network': 'TRC20',
-        'address': 'TBZC3f5wd75QDDKjzZstyubgDU6UddKJSU'
+        'address': 'TQsqhmhHgpLjYcs3YUgKEpCRZDA2LVL9WE'
     }
 }
 
