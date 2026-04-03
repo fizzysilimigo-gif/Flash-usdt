@@ -20,7 +20,7 @@ WALLET_ADDRESSES = {
     },
     'usdt_bep20': {
         'network': 'BEP20',
-        'address': '0xb7e6cea8376bd4aadd96c543cae48236a7f3a547'
+        'address': '0x094f04359f562bea5e22ee5b042f9c6242e6d3b5'
     },
     'usdt_trc20': {
         'network': 'TRC20',
